@@ -1,14 +1,16 @@
 import "./NavbarStyles.css";
-import React, {useContext} from "react";
+import React from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import AuthContext from "./context/AuthProvider";
+import { useSelector, useDispatch } from "react-redux";
+import { authDeleted } from "./features/authSlice";
 
 export default function Navbar() {
-    const { auth, setAuth } = useContext(AuthContext);
+    const authredux = useSelector(state => state.auth);
+    const dispatch = useDispatch();
     let zmienna = false;
     const resolvedPath = useResolvedPath("/Logowanie");
     const isActive = useMatch( {path: resolvedPath.pathname, end: true})
-    if ((auth != null) && !isActive) zmienna = true;
+    if ((authredux.username != null) && !isActive) zmienna = true;
     else zmienna = false;
     return (
         <>
@@ -40,8 +42,8 @@ export default function Navbar() {
                     <ActiveLink to="/dodajKategorie">Dodaj Kategorię</ActiveLink>
                     {zmienna ? (
                         <div>
-                            Witaj, {auth.user}
-                            <button onClick={() => setAuth(null)}> Wyloguj się</button>
+                            Witaj, {authredux.username}
+                            <button onClick={() => dispatch(authDeleted())}> Wyloguj się</button>
                         </div>
 
                     ):(

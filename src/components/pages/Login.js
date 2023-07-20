@@ -1,10 +1,13 @@
-import React, { useRef, useState, useEffect, useContext } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom";
-import AuthContext from "../context/AuthProvider";
 import './LoginStyles.css'
+import { useSelector, useDispatch } from "react-redux";
+import { authAdded } from "../features/authSlice";
 
 export default function Login() {
-    const { auth, setAuth } = useContext(AuthContext);
+    const authredux = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+
     const userRef = useRef();
     const errRef = useRef();
 
@@ -25,7 +28,7 @@ export default function Login() {
         e.preventDefault();
         console.log(user);
         
-        setAuth({user,pass});
+        dispatch( authAdded(user) )
         setUser('');
         setPass('');
         setSuccess(true);
@@ -35,7 +38,7 @@ export default function Login() {
         <>
             {success ? (
                 <div className="formularz">
-                    <h1>Witaj {auth.user}</h1>
+                    <h1>Witaj {authredux.username}</h1>
                     <br />
                     <p>
                         <Link to="/">Przejdź do strony głównej</Link>

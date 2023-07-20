@@ -6,13 +6,11 @@ import Login from './components/pages/Login';
 import Home from './components/pages/Home';
 import Register from './components/pages/Register';
 import { Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './components/context/AuthProvider';
 
 function App() {
 
   return (
     <>
-    <AuthProvider>
       <Navbar></Navbar>
         <div className="App">
           <Routes>
@@ -22,9 +20,7 @@ function App() {
             <Route path='/Logowanie' element = { <Login /> } />
             <Route path='/Rejestracja' element = { <Register /> } />
           </Routes>
-        </div>
-    </AuthProvider>
-      
+        </div>      
     </>
     
   );
