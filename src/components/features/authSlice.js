@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// localstorage.getitem ? null
 const initialState = {
         username: null
 }
@@ -11,9 +12,11 @@ const authSlice = createSlice({
   reducers: {
     authAdded(state, action) {
         state.username=action.payload
+        // localstorage.setitem
     },
     authDeleted(state) {
         state.username=null
+        // localstorage.setitem
     }
   }  
 })

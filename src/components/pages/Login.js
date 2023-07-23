@@ -5,7 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { authAdded } from "../features/authSlice";
 
 export default function Login() {
+    let accountExist = false;
+    let passwordMatch = false;
     const authredux = useSelector(state => state.auth);
+    const accounts = useSelector(state => state.users);
     const dispatch = useDispatch();
 
     const userRef = useRef();
@@ -28,10 +31,28 @@ export default function Login() {
         e.preventDefault();
         console.log(user);
         
-        dispatch( authAdded(user) )
-        setUser('');
-        setPass('');
-        setSuccess(true);
+        for (let index = 0; index < accounts.length; index++) {
+            if (accounts[index].username === user) {
+                accountExist = true;
+                if(accounts[index].password === pass) {
+                    passwordMatch = true;
+                }
+                break;
+            }
+        }
+        if (!accountExist) setErrMsg('Podane konto nie istnieje!')
+        else if (accountExist && !passwordMatch) setErrMsg('Podane hasło jest nieprawidłowe!')
+        else if(accountExist && passwordMatch){
+            dispatch( authAdded(user) )
+            setUser('');
+            setPass('');
+            //const listaTransakcji = localstorage.getItem('transactions-pspizk-username')
+            // i tutaj w przyszlosci bedzie dispatch transactionsAdded
+            setSuccess(true);
+        }
+        accountExist = false;
+        passwordMatch = false;
+        return;
     }
 
     return (

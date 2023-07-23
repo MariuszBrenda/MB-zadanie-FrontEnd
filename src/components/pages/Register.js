@@ -2,12 +2,19 @@ import { useRef, useState, useEffect } from "react";
 import {faCheck, faTimes, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import { usersAdded } from "../features/usersSlice";
 import "./RegisterStyles.css";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Register = () => {
+    let nameTaken = false;
+    const users = useSelector(state => state.users);
+    const dispatch = useDispatch();
+
     const userRef = useRef();
     const errRef = useRef();
 
@@ -58,15 +65,40 @@ const Register = () => {
             setErrMsg("Nieprawidłowe dane");
             return;
         }
-        console.log(user, pass);
-        setSuccess(true);
+        
+        for (let index = 0; index < users.length; index++) {
+            //console.log('tab: ' + users[index].username);
+            //console.log('user: ' + user)
+            if (users[index].username === user) {
+                
+                setErrMsg("Użytkownik już istnieje, zmień nazwę użytkownika!");
+                nameTaken = true;
+                break;
+            }
+        }
+        if(!nameTaken){
+            dispatch(
+                usersAdded({
+                    id: nanoid(),
+                    username: user,
+                    password: pass
+                })
+            )
+            setUser('');
+            setPass('');
+            setMatchPass('');
+            setSuccess(true);
+        }        
+        nameTaken = false;
+        return;
     }
 
     return (
         <>
         {success ? (
                 <div className="formularz">
-                    <h1>Sukces!</h1>
+                    <h1>Sukces! </h1>
+                    <p>Konto {users[users.length - 1].username } utworzone!</p>
                     <p>
                     <Link to="/Logowanie">
                         Zaloguj się!

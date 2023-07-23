@@ -13,8 +13,7 @@ export default function Navbar() {
     if ((authredux.username != null) && !isActive) zmienna = true;
     else zmienna = false;
     return (
-        <>
-            
+        <>          
             <nav>
                 <Link to="/">
                     <svg className="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3">
@@ -33,21 +32,21 @@ export default function Navbar() {
                     </svg>
                     <div className="tytul">TwójBudżet</div>
                 </Link>
-
-                
-                
+            
                 <ul className="navbar">
                     <ActiveLink to="/">Strona Główna</ActiveLink>
-                    <ActiveLink to="/dodajWydatek">Dodaj Wydatek</ActiveLink>
-                    <ActiveLink to="/dodajKategorie">Dodaj Kategorię</ActiveLink>
+                    
                     {zmienna ? (
-                        <div>
-                            Witaj, {authredux.username}
-                            <button onClick={() => dispatch(authDeleted())}> Wyloguj się</button>
-                        </div>
-
-                    ):(
                         <>
+                            <ActiveLink to="/dodajWydatek">Dodaj Wydatek</ActiveLink>
+                            <ActiveLink to="/dodajKategorie">Dodaj Kategorię</ActiveLink>
+                            <div className="panel">
+                                Witaj, {authredux.username}
+                                <button onClick={() => dispatch(authDeleted())}> Wyloguj się</button>
+                            </div>
+                        </>
+                    ):(
+                        <>                            
                             <ActiveLink to="/Logowanie">Zaloguj się</ActiveLink>
                             <ActiveLink to="/Rejestracja">Rejestracja</ActiveLink>
                         </>
@@ -61,9 +60,6 @@ export default function Navbar() {
 function ActiveLink( {to, children, ...props}) {
     const resolvedPath = useResolvedPath(to);
     const isActive = useMatch( {path: resolvedPath.pathname, end: true})
-    //if (resolvedPath.pathname === "/Logowanie")
-    //children = 'test'; - tutaj zmienić na wyświetlanie użytkownika
-    //console.log(resolvedPath.pathname);
     return(
         <li className={isActive ? "active" : ""}> 
             <Link to={to} {...props}>                
