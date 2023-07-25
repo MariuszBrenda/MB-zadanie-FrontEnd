@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import AddExpense from './components/pages/AddExpense';
+import AddTransaction from './components/pages/AddTransaction';
 import AddCategory from './components/pages/AddCategory';
 import Login from './components/pages/Login';
 import Home from './components/pages/Home';
@@ -15,7 +15,7 @@ function App() {
         <div className="App">
           <Routes>
             <Route path='/' element ={ <Home /> } />
-            <Route path='/dodajWydatek' element = { <AddExpense /> } />
+            <Route path='/dodajWydatek' element = { <AddTransaction /> } />
             <Route path='/dodajKategorie' element = { <AddCategory /> } />
             <Route path='/Logowanie' element = { <Login /> } />
             <Route path='/Rejestracja' element = { <Register /> } />

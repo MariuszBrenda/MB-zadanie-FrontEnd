@@ -38,7 +38,7 @@ export default function Navbar() {
                     
                     {zmienna ? (
                         <>
-                            <ActiveLink to="/dodajWydatek">Dodaj Wydatek</ActiveLink>
+                            <ActiveLink to="/dodajWydatek">Dodaj Transakcję</ActiveLink>
                             <ActiveLink to="/dodajKategorie">Dodaj Kategorię</ActiveLink>
                             <div className="panel">
                                 Witaj, {authredux.username}

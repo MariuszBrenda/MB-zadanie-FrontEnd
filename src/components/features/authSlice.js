@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // localstorage.getitem ? null
-const initialState = {
-        username: null
-}
+const initialState = 
+  localStorage.getItem("pspizk-mb-auth") !== null 
+    ? JSON.parse(localStorage.getItem("pspizk-mb-auth")) : {
+      username: null
+    }
 
 
 const authSlice = createSlice({
@@ -12,11 +14,11 @@ const authSlice = createSlice({
   reducers: {
     authAdded(state, action) {
         state.username=action.payload
-        // localstorage.setitem
+        localStorage.setItem("pspizk-mb-auth", JSON.stringify(state));
     },
     authDeleted(state) {
         state.username=null
-        // localstorage.setitem
+        localStorage.setItem("pspizk-mb-auth", JSON.stringify(state));
     }
   }  
 })

@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//tutaj localStorage.GetItem
 
-const initialState = [{
-    id: '1',
-    username: 'admin',
-    password: 'admin'
-}]
+const initialState = 
+    localStorage.getItem("pspizk-mb-users") !== null 
+        ? JSON.parse(localStorage.getItem("pspizk-mb-users")) : [{
+            id: '1',
+            username: 'admin',
+            password: 'admin' 
+        }]
 
 const usersSlice = createSlice({
     name: 'users',
@@ -15,7 +16,7 @@ const usersSlice = createSlice({
         usersAdded(state, action) {
             state.push(action.payload)
             // tutaj localStorage.setItem
-
+            localStorage.setItem("pspizk-mb-users", JSON.stringify(state));
             //w transactions added jako argumenty dodac tez username i na jego podstawie tworzyc setitem
         },
         usersDeleteAll(state) {

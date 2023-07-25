@@ -1,20 +1,18 @@
-import React from "react"
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 
-
-export default function Home() {
+export default function AddTransaction() {
     const auth = useSelector(state => state.auth);
 
     return (
         <>
         { (auth.username !== null) ? (
-                <h1>Strona Główna </h1>
-                // tutaj okno w stylu apki todo, kazdy wydatek wyswietlany poprzez funkcje osobna, z .map 
+                <h1>Dodaj Transakcję! </h1>
+                //tutaj formularz jak w ekranie rejestracji, z wyborem kategorii i typu transakcji, kalendarzem itp
             ) : (
                 <div className="niezalogowany">
-                    <h1>Witaj w aplikacji TwójBudżet! </h1>
-                    <p>Aby skorzystać z jej funkcjonalności musisz się zalogować.</p>
+                    <h1>Nie jesteś zalogowany!</h1>
+                    <p>Aby skorzystać z tej funkcjonalności musisz się zalogować.</p>
                     <p>
                     <Link to="/Logowanie">
                         Zaloguj się!
@@ -31,4 +29,4 @@ export default function Home() {
         </>
         
     )
-} 
+}
