@@ -20,7 +20,7 @@ const usersSlice = createSlice({
             //w transactions added jako argumenty dodac tez username i na jego podstawie tworzyc setitem
         },
         usersDeleteAll(state) {
-            state = initialState
+            state = [{id:1, username: 'admin', password: 'admin'}]
             // jak będzie zasysać z local storage to nie może być initial state tylko z ręki admin admin
             // tutaj też localStorage.setItem
         }
