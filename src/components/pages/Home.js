@@ -4,15 +4,43 @@ import { useSelector, useDispatch } from "react-redux"
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useRef, useEffect, useState } from "react";
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { transactionAdded, transactionDeleteAll } from "../features/transactionSlice";
 
 
 export default function Home() {
     const auth = useSelector(state => state.auth);
     const transactions = useSelector(state => state.transactions);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const dispatch = useDispatch();
+
+    const [filters, setFilters] = useState({
+        user: { value: auth.username, matchMode: FilterMatchMode.EQUALS }
+    });
 
     function wyswietl() {
         console.log(selectedProduct);
+    }
+
+    function usunWszystko() {
+        dispatch(
+            transactionDeleteAll()
+        );
+        dispatch(
+            transactionAdded([{
+                id: null,
+                user: null,
+                typeOfTrans: null,
+                category: null,
+                amount: null,
+                date: null,
+                note: null
+            }])
+        );
+    }
+
+    function wyswietlStan(){
+        console.log(transactions);
     }
 
     return (
@@ -20,13 +48,17 @@ export default function Home() {
         { (auth.username !== null) ? (
                 <>
                     <h1>Strona Główna </h1>
-                    <button onClick={wyswietl}>coś</button>
+                    <button onClick={wyswietl}>konsola - wybrany produkt</button>
+                    <button onClick={usunWszystko}>Usuń wszystko</button>
+                    <button onClick={wyswietlStan}>Stan</button>
 
                     <div className="card">
                         
-                        <DataTable value={transactions} selectionMode={'radiobutton'} selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}>
+                        <DataTable value={transactions} selectionMode={'radiobutton'} selection={selectedProduct} 
+                            onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}
+                            filters={filters}>
                             <Column selectionMode="single" headerStyle={{ width: '3rem' }}></Column>
-                            <Column field="date" header="Data"></Column>
+                            <Column field="date" header="Data" sortable style={{ width: '25%' }}></Column>
                             <Column field="typeOfTrans" header="Typ transakcji"></Column>
                             <Column field="category" header="Kategoria"></Column>
                             <Column field="amount" header="Kwota"></Column>

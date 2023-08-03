@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import './LoginStyles.css'
 import { useSelector, useDispatch } from "react-redux";
 import { authAdded } from "../features/authSlice";
+import { transactionsReload } from "../features/transactionSlice";
 
 export default function Login() {
     let accountExist = false;
@@ -43,11 +44,11 @@ export default function Login() {
         if (!accountExist) setErrMsg('Podane konto nie istnieje!')
         else if (accountExist && !passwordMatch) setErrMsg('Podane hasło jest nieprawidłowe!')
         else if(accountExist && passwordMatch){
-            dispatch( authAdded(user) )
+            dispatch( authAdded(user) );
+            dispatch( transactionsReload(user) );
+            //console.log(user);
             setUser('');
             setPass('');
-            //const listaTransakcji = localstorage.getItem('transactions-pspizk-username')
-            // i tutaj w przyszlosci bedzie dispatch transactionsAdded
             setSuccess(true);
         }
         accountExist = false;

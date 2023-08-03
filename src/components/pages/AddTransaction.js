@@ -125,7 +125,14 @@ const AddTransaction = () => {
         console.log('submit done')
         if(selectedCategory === null || amount <= 0 || amount ===null || date > today || date === null) setErrMsg('Nieprawidłowe dane, spróboj ponownie!');
         else {
-            const appropriateDate = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+            let day = date.getDate();
+            let month = date.getMonth();
+            console.log("dzień przed: " + day);
+            console.log("dzień dług.: " + day);
+            if(day < 10) day = day.toLocaleString('pl-PL', {minimumIntegerDigits: 2, useGrouping:false});
+            console.log('dzień po: ' + day);
+            if(month < 10) month = month.toLocaleString('pl-PL', {minimumIntegerDigits: 2, useGrouping:false});
+            const appropriateDate = day + "/" + month + "/" + date.getFullYear();
             dispatch(
                 transactionAdded({
                     id: nanoid(),
@@ -133,7 +140,8 @@ const AddTransaction = () => {
                     category: selectedCategory.name,
                     amount: amount,
                     date: appropriateDate,
-                    note: note
+                    note: note,
+                    user: auth.username
                 })
             )
             Delete();
