@@ -1,0 +1,9 @@
+.wybieracz {
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+    font-size:xx-large;
+}

@@ -44,8 +44,6 @@ const AddTransaction = () => {
         { name: 'Samochód', code: 'CAR' },
         { name: 'Podróże', code: 'TRA' },
         { name: 'Dom', code: 'HOM' },
-        { name: 'Transport', code: 'MZK'},
-        { name: 'Kosmetyki', code: 'COM'},
         { name: 'inne', code: 'DIF'}
     ]; 
 
@@ -126,7 +124,7 @@ const AddTransaction = () => {
         if(selectedCategory === null || amount <= 0 || amount ===null || date > today || date === null) setErrMsg('Nieprawidłowe dane, spróboj ponownie!');
         else {
             let day = date.getDate();
-            let month = date.getMonth();
+            let month = date.getMonth()+1;
             console.log("dzień przed: " + day);
             console.log("dzień dług.: " + day);
             if(day < 10) day = day.toLocaleString('pl-PL', {minimumIntegerDigits: 2, useGrouping:false});
