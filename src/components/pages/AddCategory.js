@@ -1,3 +1,3 @@
 export default function AddCategory() {
-    return <h1>Dodaj Kategorię</h1>
+    return <h1>Funkcja w przygotowaniu</h1>
 }

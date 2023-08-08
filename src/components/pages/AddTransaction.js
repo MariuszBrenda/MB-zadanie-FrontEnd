@@ -9,8 +9,8 @@ import { addLocale } from 'primereact/api';
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { nanoid } from "@reduxjs/toolkit";
+import { Toast } from 'primereact/toast';
 import './TransactionStyles.css'
-
 import 'primereact/resources/themes/saga-purple/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -34,6 +34,7 @@ const AddTransaction = () => {
     const [note, setNote] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState('');
+    const toast = useRef(null);
 
     const expenseCategories = [ 
         { name: 'Spożywcze', code: 'EAT' },
@@ -145,16 +146,15 @@ const AddTransaction = () => {
             Delete();
             setSuccess(true);
             console.log(transactions);
+            toast.current.show({ severity: 'success', summary: 'Info', detail: 'Transakcja dodana!' });
         }
     }
 
-    function wyswietl() {
-        console.log(today)
-    }
     return (
         <>
         { (auth.username !== null) ? (
                 <div className="trans-form">
+                    <Toast ref={toast} position="bottom-left"/>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}
                         aria-live="assertive">{errMsg}</p>
                     <h1>Transakcja</h1>
@@ -199,7 +199,6 @@ const AddTransaction = () => {
                         </span>
                             
                     </form>
-                    <button onClick={wyswietl}></button>
                 </div>
                 //tutaj formularz jak w ekranie rejestracji, z wyborem kategorii i typu transakcji, kalendarzem itp
             ) : (

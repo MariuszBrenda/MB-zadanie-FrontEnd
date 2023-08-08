@@ -9,6 +9,12 @@ import { transactionAdded, transactionDeleteAll } from "../features/transactionS
 import { Tag } from "primereact/tag";
 import { Chart } from 'primereact/chart';
 import './HomeStyles.css'
+import { TabView, TabPanel } from 'primereact/tabview';
+import { Button } from "primereact/button";
+
+import 'primereact/resources/themes/saga-purple/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 
 export default function Home() {
@@ -145,7 +151,7 @@ export default function Home() {
                 labels: ['Dochód', 'Wydatek'],
                 datasets: [
                     {
-                        label: 'Obrót',
+                        label: 'Kwota w zł',
                         data: [monthIncSum, monthExpSum],
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.4)',
@@ -171,31 +177,42 @@ export default function Home() {
             setChartOptions(options);
     },[monthFilter])
 
+
+
     return (
         <>
         { (auth.username !== null) ? (
                 <>
-                    <div className="card" style={{backgroundColor: 'white'}}>
-                        <Chart type="bar" data={chartData} options={chartOptions} />
-                    </div>
-                    <div className="wybieracz">
-                        <button onClick={monthForward}>+</button>
-                        <p>{monthFilter}</p>
-                        <button onClick={monthBackward}>-</button>
-                    </div>
-                    <div className="card">
-                        
-                        <DataTable value={transactions} removableSort selectionMode={'radiobutton'} selection={selectedProduct} 
-                            onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}
-                            filters={filters} scrollable scrollHeight="370px">
-                            <Column selectionMode="single" headerStyle={{ width: '3rem' }}></Column>
-                            <Column field="date" header="Data" sortable style={{ width: '25%' }}></Column>
-                            <Column field="typeOfTrans" header="Typ transakcji"></Column>
-                            <Column field="category" header="Kategoria" ></Column>
-                            <Column field="amount" header="Kwota" body={amountBodyTemplate} ></Column>
-                            <Column field="note" header="Notatka"></Column>
-                        </DataTable>
-                    </div>
+                <div className="card">
+                    <TabView>
+                        <TabPanel header="Wykresy">
+                            <div className="card" style={{backgroundColor: 'white'}}>
+                                <Chart type="bar" data={chartData} options={chartOptions} height="400px" width="600px"/>
+                            </div>
+                            
+                        </TabPanel>
+                        <TabPanel header="Tabela transakcji">
+                            <div className="card">
+                            
+                                <DataTable value={transactions} removableSort selectionMode={'radiobutton'} selection={selectedProduct} 
+                                    onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}
+                                    filters={filters} scrollable scrollHeight="370px" sortField="date" sortOrder={-1}>
+                                    <Column selectionMode="single" headerStyle={{ width: '3rem' }}></Column>
+                                    <Column field="date" header="Data" sortable style={{ width: '25%' }} ></Column>
+                                    <Column field="typeOfTrans" header="Typ transakcji"></Column>
+                                    <Column field="category" header="Kategoria" ></Column>
+                                    <Column field="amount" header="Kwota" body={amountBodyTemplate} ></Column>
+                                    <Column field="note" header="Notatka"></Column>
+                                </DataTable>
+                            </div>
+                        </TabPanel>
+                    </TabView>
+                </div>
+                <span className="p-buttonset">
+                    <Button type="button" label="Poprzedni miesiąc" icon="pi pi-arrow-left" onClick={monthBackward} size="large"/>  
+                    <Button label={monthFilter} disabled size="large"/>
+                    <Button type="button" label="Kolejny miesiąc" icon="pi pi-arrow-right" iconPos="right" onClick={monthForward} size="large"/>
+                </span>
                 </>
                 
             ) : (

@@ -39,7 +39,7 @@ export default function Navbar() {
                     {zmienna ? (
                         <>
                             <ActiveLink to="/dodajWydatek">Dodaj Transakcję</ActiveLink>
-                            <ActiveLink to="/dodajKategorie">Dodaj Kategorię</ActiveLink>
+                            <ActiveLink to="/dodajKategorie">Kantor Online</ActiveLink>
                             <div className="panel">
                                 Witaj, {authredux.username}
                                 <button onClick={() => dispatch(authDeleted())}> Wyloguj się</button>
