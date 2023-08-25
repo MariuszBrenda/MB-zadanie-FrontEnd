@@ -144,9 +144,6 @@ export default function Home() {
         console.log('suma wydatkow: ' + monthExpSum);
         setMonthIncomes(monthIncSum);
         console.log('suma przychodow: ' + monthIncSum);
-        //<button onClick={wyswietl}>konsola - wybrany produkt</button>
-          //          <button onClick={usunWszystko}>Usuń wszystko</button>
-            //        <button onClick={wyswietlStan}>Stan</button>
             const data = {
                 labels: ['Dochód', 'Wydatek'],
                 datasets: [
