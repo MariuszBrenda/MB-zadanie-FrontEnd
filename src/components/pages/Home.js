@@ -32,6 +32,10 @@ export default function Home() {
     const [monthIncomes, setMonthIncomes] = useState();
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
+    const [doughnutData, setDoughnutData] = useState({});
+    const [doughnutOptions, setDoughnutOptions] = useState({});
+    const [doughnutIncData, setDoughnutIncData] = useState({});
+    const [doughnutIncOptions, setDoughnutIncOptions] = useState({});
 
     function wyswietl() {
         console.log(selectedProduct);
@@ -113,37 +117,99 @@ export default function Home() {
             user: { value: auth.username, matchMode: FilterMatchMode.EQUALS },
             date: { value: helper, matchMode: FilterMatchMode.CONTAINS}
         });
-        console.log(monthFilter);
-        console.log(filters);
+        //console.log(monthFilter);
+        //console.log(filters);
+    }
+
+    function CategorySum(sumArray, element){
+        console.log(sumArray);
+        for (let index = 0; index < sumArray.length; index++) {
+                                
+            if (sumArray[index].name === element.category) {
+                sumArray[index].sum += element.amount;
+                break;
+            }
+        }
+    }
+
+    function CategoryChart(array) {
+        let labels = [];
+        let data = [];
+        let colors = ['rgb(0, 200, 0)', 'rgb(0, 0, 200)', 'rgb(200, 0, 0)', 'rgb(200,200,0)', 'rgb(200,0,200)', 'rgb(0,200,200)', 'rgb(200,200,200)', 'rgb(100,100,100)', 'rgb(0,150, 67)'];
+        let colorshover = ['rgba(0, 200, 0, 0.8)', 'rgba(0, 0, 200, 0.8)', 'rgba(200, 0, 0, 0.8)', 'rgba(200,200,0, 0.8)', 'rgba(200,0,200, 0.8)', 'rgba(0,200,200, 0.8)', 'rgba(200,200,200, 0.8)', 'rgba(100,100,100,0.8)', 'rgba(0,150, 67,0.8)'];
+        array.forEach( element => {
+            labels.push(element.name);
+            data.push(element.sum);
+        });
+        
+        const dataChart = {
+            labels: labels,
+            datasets: [
+                {
+                    data: data,
+                    backgroundColor: colors,
+                    hoverBackgroundColor: colorshover
+                }
+            ]
+        };
+        const optionsChart = {
+            cutout: '60%'
+        };
+
+        return [dataChart, optionsChart];
     }
 
     useEffect(() => {
         let dateHelper;
         let monthExpSum = 0;
         let monthIncSum = 0;
-        console.log('filtr zmieniony');
+        let monthCatSum = [ 
+            { name: 'Spożywcze', sum: 0 },
+            { name: 'Zakupy', sum: 0 },
+            { name: 'Rachunki', sum: 0 },
+            { name: 'Rozrywka', sum: 0 },
+            { name: 'Zdrowie', sum: 0 },
+            { name: 'Samochód', sum: 0 },
+            { name: 'Podróże', sum: 0 },
+            { name: 'Dom', sum: 0 },
+            { name: 'inne', sum: 0}
+        ]; 
+        let monthIncCatSum = [
+            { name: 'Wynagrodzenie', sum: 0 },
+            { name: 'Podarunki', sum: 0 },
+            { name: 'Kredyt', sum: 0 },
+            { name: 'Inne', sum: 0 }
+        ]; 
+        
         transactions.forEach(element => {
             if(element.user === auth.username){
                 // sprawdzenie czy miesiąc się zgadza
+
                 dateHelper = element.date.slice(-7)
                 if(dateHelper === monthFilter){
-
+                console.log(element);
                     switch (element.typeOfTrans) {
                         case 'Wydatek':
                             monthExpSum += element.amount;
+                            CategorySum(monthCatSum, element);
                             break;
                     
                         default:
                             monthIncSum += element.amount;
+                            CategorySum(monthIncCatSum, element);
                             break;
                     }
                 }
             }
         });
+
+        console.log(monthCatSum);
+        //console.log(monthIncCatSum);
         setMonthExpenses(monthExpSum);
-        console.log('suma wydatkow: ' + monthExpSum);
+        //console.log('suma wydatkow: ' + monthExpSum);
         setMonthIncomes(monthIncSum);
-        console.log('suma przychodow: ' + monthIncSum);
+        //console.log('suma przychodow: ' + monthIncSum);
+
             const data = {
                 labels: ['Dochód', 'Wydatek'],
                 datasets: [
@@ -172,6 +238,15 @@ export default function Home() {
     
             setChartData(data);
             setChartOptions(options);
+
+            const expChart = CategoryChart(monthCatSum);
+            setDoughnutData(expChart[0]);
+            setDoughnutOptions(expChart[1]);
+
+            const incChart = CategoryChart(monthIncCatSum);
+            setDoughnutIncData(incChart[0]);
+            setDoughnutIncOptions(incChart[1]);
+
     },[monthFilter])
 
 
@@ -182,11 +257,21 @@ export default function Home() {
                 <>
                 <div className="card">
                     <TabView>
-                        <TabPanel header="Wykresy">
+                        <TabPanel header="Bilans miesięczny">
                             <div className="card" style={{backgroundColor: 'white'}}>
                                 <Chart type="bar" data={chartData} options={chartOptions} height="400px" width="600px"/>
                             </div>
                             
+                        </TabPanel>
+                        <TabPanel header="Rozbicie kosztów">
+                            <div className="card flex justify-content-center">
+                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-full md:w-30rem" />
+                            </div>
+                        </TabPanel>
+                        <TabPanel header="Rozbicie dochodów">
+                            <div className="card flex justify-content-center">
+                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-full md:w-30rem" />
+                            </div>
                         </TabPanel>
                         <TabPanel header="Tabela transakcji">
                             <div className="card">
