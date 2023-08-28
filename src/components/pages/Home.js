@@ -5,7 +5,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useRef, useEffect, useState } from "react";
 import { FilterMatchMode } from 'primereact/api';
-import { transactionAdded, transactionDeleteAll } from "../features/transactionSlice";
+import { transactionAdded, transactionDeleteAll, transactionDeleted } from "../features/transactionSlice";
 import { Tag } from "primereact/tag";
 import { Chart } from 'primereact/chart';
 import './HomeStyles.css'
@@ -37,8 +37,20 @@ export default function Home() {
     const [doughnutIncData, setDoughnutIncData] = useState({});
     const [doughnutIncOptions, setDoughnutIncOptions] = useState({});
 
-    function wyswietl() {
+    function usunWybrany() {
+        let indexToDelete;
         console.log(selectedProduct);
+        console.log(transactions.length);
+        for (let index = 0; index < transactions.length; index++) {
+            if (transactions[index].id == selectedProduct.id) {
+                indexToDelete = index;
+                break;
+            }
+        };
+        console.log(indexToDelete);
+        dispatch(
+            transactionDeleted(indexToDelete)
+        );
     }
 
     function usunWszystko() {
@@ -58,10 +70,6 @@ export default function Home() {
         );
     }
 
-    function wyswietlStan(){
-        console.log(transactions);
-    }
-
     function giveDate(){
         const today = new Date();
         let monthHelper = today.getMonth() + 1;
@@ -78,7 +86,7 @@ export default function Home() {
             severity = 'success';
         }
         const value = sign + rowData.amount + ' zł';
-        return <Tag value={value} severity={severity}></Tag>
+        return <Tag value={value} severity={severity} style={{width: "70px"}}></Tag>
     }
 
     function monthForward(){
@@ -122,7 +130,7 @@ export default function Home() {
     }
 
     function CategorySum(sumArray, element){
-        console.log(sumArray);
+        //console.log(sumArray);
         for (let index = 0; index < sumArray.length; index++) {
                                 
             if (sumArray[index].name === element.category) {
@@ -187,7 +195,7 @@ export default function Home() {
 
                 dateHelper = element.date.slice(-7)
                 if(dateHelper === monthFilter){
-                console.log(element);
+                //console.log(element);
                     switch (element.typeOfTrans) {
                         case 'Wydatek':
                             monthExpSum += element.amount;
@@ -255,46 +263,52 @@ export default function Home() {
         <>
         { (auth.username !== null) ? (
                 <>
-                <div className="card">
+                <div className="karta">
                     <TabView>
                         <TabPanel header="Bilans miesięczny">
-                            <div className="card" style={{backgroundColor: 'white'}}>
-                                <Chart type="bar" data={chartData} options={chartOptions} height="400px" width="600px"/>
+                            <div className="card" >
+                                <Chart type="bar" data={chartData} options={chartOptions} height="430px" width="600px"/>
                             </div>
                             
                         </TabPanel>
                         <TabPanel header="Rozbicie kosztów">
                             <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-full md:w-30rem" />
+                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-full md:w-27rem"/>
                             </div>
                         </TabPanel>
                         <TabPanel header="Rozbicie dochodów">
                             <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-full md:w-30rem" />
+                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-full md:w-27rem" />
                             </div>
                         </TabPanel>
                         <TabPanel header="Tabela transakcji">
                             <div className="card">
-                            
                                 <DataTable value={transactions} removableSort selectionMode={'radiobutton'} selection={selectedProduct} 
-                                    onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}
-                                    filters={filters} scrollable scrollHeight="370px" sortField="date" sortOrder={-1}>
-                                    <Column selectionMode="single" headerStyle={{ width: '3rem' }}></Column>
-                                    <Column field="date" header="Data" sortable style={{ width: '25%' }} ></Column>
+                                    onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{minHeight: "380px", minWidth: "35rem" }}
+                                    filters={filters} scrollable scrollHeight="380px"  sortField="date" sortOrder={-1}>
+                                    <Column selectionMode="single" headerStyle={{ width: '2rem' }}></Column>
+                                    <Column field="date" header="Data" sortable style={{ width: '15%' }} ></Column>
                                     <Column field="typeOfTrans" header="Typ transakcji"></Column>
                                     <Column field="category" header="Kategoria" ></Column>
                                     <Column field="amount" header="Kwota" body={amountBodyTemplate} ></Column>
                                     <Column field="note" header="Notatka"></Column>
                                 </DataTable>
                             </div>
+                            <div className="p-buttonset">
+                                <Button type="button" label="Usuń wybrany rekord" icon="pi pi-trash" onClick={usunWybrany} size="large"></Button>
+                                <Button type="button" label="Edytuj wybrany rekord" disabled icon="pi pi-file-edit" onClick={usunWybrany} size="large"></Button>
+                            </div>
+                            
                         </TabPanel>
                     </TabView>
+                    <div className="p-buttonset">
+                        <Button type="button" label="Poprzedni miesiąc" icon="pi pi-arrow-left" onClick={monthBackward} size="large"/>  
+                        <Button label={monthFilter} disabled size="large"/>
+                        <Button type="button" label="Kolejny miesiąc" icon="pi pi-arrow-right" iconPos="right" onClick={monthForward} size="large"/>
+                    </div>
                 </div>
-                <span className="p-buttonset">
-                    <Button type="button" label="Poprzedni miesiąc" icon="pi pi-arrow-left" onClick={monthBackward} size="large"/>  
-                    <Button label={monthFilter} disabled size="large"/>
-                    <Button type="button" label="Kolejny miesiąc" icon="pi pi-arrow-right" iconPos="right" onClick={monthForward} size="large"/>
-                </span>
+                
+                
                 </>
                 
             ) : (

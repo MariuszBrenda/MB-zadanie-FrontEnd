@@ -163,12 +163,12 @@ const AddTransaction = () => {
                         { (value === 'Wydatek') ? (
                         <div className="card flex justify-content-center">
                             <Dropdown value={selectedCategory} onChange={(e) => setCategory(e.value)} options={expenseCategories}  optionLabel="name"
-                                placeholder="Wybierz Kategorię" className="w-full md:w-14rem" style={{width: '12rem', textAlign: 'left'}} />
+                                placeholder="Wybierz Kategorię" className="w-full md:w-20rem" style={{ textAlign: 'left'}} />
                         </div>
                         ) : (
                         <div className="card flex justify-content-center">
                             <Dropdown value={selectedCategory} onChange={(e) => setCategory(e.value)} options={incomeCategories}  optionLabel="name"
-                                placeholder="Wybierz Kategorię" className="w-full md:w-14rem"  style={{width: '12rem', textAlign: 'left'}}/>
+                                placeholder="Wybierz Kategorię" className="w-full md:w-20rem"  style={{ textAlign: 'left'}}/>
                         </div>
                         )}
                         

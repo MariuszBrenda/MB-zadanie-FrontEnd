@@ -18,9 +18,9 @@ export default function AddCategory() {
 
     const firstUpdate = useRef(true);
     const firstUpdate2 = useRef(true);
-    const [fromCurrency, setfromCurrency] = useState({ name: 'Polski Złoty', code: 'PL', currency: 'PLN' });
+    const [fromCurrency, setfromCurrency] = useState({ name: 'Dolar Amerykański', code: 'US', currency: 'USD' });
     const [fromCurrAmmount, setFromCurrAmmount] = useState(1);
-    const [toCurrency, setToCurrency] = useState({ name: 'Dolar Amerykański', code: 'US', currency: 'USD' });
+    const [toCurrency, setToCurrency] = useState({ name: 'Polski Złoty', code: 'PL', currency: 'PLN' });
     const [toCurrAmmount, setToCurrAmmount] = useState(null);
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});

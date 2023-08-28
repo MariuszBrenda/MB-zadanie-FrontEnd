@@ -7,3 +7,9 @@
     line-height: 60px;
     font-size:xx-large;
 }
+
+.karta {
+    background-color: white;
+    width: 45rem;
+    height: 480px;
+}
