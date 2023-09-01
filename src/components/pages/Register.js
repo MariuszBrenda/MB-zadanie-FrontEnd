@@ -1,6 +1,4 @@
 import { useRef, useState, useEffect } from "react";
-import {faCheck, faTimes, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
@@ -114,10 +112,10 @@ const Register = () => {
                 <label htmlFor="username">
                     Nazwa użytkownika: 
                     <span className= {validName ? "valid" : "hide"}>
-                        <FontAwesomeIcon icon={faCheck} />
+                        <i className="pi pi-check"/>
                     </span>
                     <span className= {validName || !user ? "hide" : "invalid"}>
-                        <FontAwesomeIcon icon={faTimes} />
+                        <i className="pi pi-times"/>
                     </span>
                 </label>
                 <input 
@@ -134,8 +132,8 @@ const Register = () => {
                 />
                 <p id="uidnote" className={userFocus && user && 
                     !validName ? "instructions" : "offscreen"}>
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                        Od 4 do 24 znaków. <br />
+                        <i className="pi pi-exclamation-circle"/> <br />
+                         Od 4 do 24 znaków. <br />
                         Musi rozpoczynać się od litery. <br />
                         Litery, cyfry, znaki specjalne dozwolone.
                 </p>
@@ -143,10 +141,10 @@ const Register = () => {
                 <label htmlFor="password">
                     Hasło: 
                     <span className={validPass ? "valid" : "hide"}>
-                        <FontAwesomeIcon icon={faCheck} />
+                        <i className="pi pi-check"/>
                     </span>
                     <span className={validPass || !pass ? "hide" : "invalid"}>
-                        <FontAwesomeIcon icon={faTimes} />
+                        <i className="pi pi-times"/>
                     </span>
                 </label>
                 <input
@@ -161,8 +159,8 @@ const Register = () => {
                 />
                 <p id="passnote" className={passFocus && !validPass ? 
                     "instructions" : "offscreen"}>
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                        Od 8 do 24 znaków. <br />
+                        <i className="pi pi-exclamation-circle"/> <br />
+                         Od 8 do 24 znaków. <br />
                         Musi zawierać wielką i małą literę, cyfrę i znak specjalny. <br />
                         Dozwolone znaki specjalne: 
                         <span aria-label="exclamation mark">!</span>
@@ -175,10 +173,10 @@ const Register = () => {
                 <label htmlFor="confirm_pass">
                     Potwierdź hasło: 
                     <span className={validMPass && matchPass ? "valid" : "hide"}>
-                        <FontAwesomeIcon icon={faCheck} />
+                        <i className="pi pi-check"/>
                     </span>
                     <span className={validMPass || !matchPass ? "hide" : "invalid"}>
-                        <FontAwesomeIcon icon={faTimes} />
+                        <i className="pi pi-times"/>
                     </span>
                 </label>
                 <input
@@ -192,8 +190,8 @@ const Register = () => {
                     onBlur={() => setMPassFocus(false)}
                 />
                 <p id="confirmnote" className={mpassFocus && !validMPass ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    Musi być identyczne jak hasło z pierwszego pola.
+                    <i className="pi pi-exclamation-circle"/> <br />
+                     Musi być identyczne jak hasło z pierwszego pola.
                 </p>
 
                 <button disabled={!validName || !validPass || !validMPass ? true : false}>

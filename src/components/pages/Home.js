@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FilterMatchMode } from 'primereact/api';
 import { transactionAdded, transactionDeleteAll, transactionDeleted } from "../features/transactionSlice";
 import { Tag } from "primereact/tag";
@@ -276,18 +276,20 @@ export default function Home() {
                     <TabView>
                         <TabPanel header={(windowSize[0] > 769) ? "Bilans miesięczny" : "Bilans"}>
                             <div className="card" >
-                                <Chart type="bar" data={chartData} options={chartOptions} height="430px" width="600px"/>
+                                <Chart type="bar" data={chartData} options={chartOptions} 
+                                height={(windowSize[0] > 769) ? "430px" : "19rem"} 
+                                width={(windowSize[0] > 769) ? "600px" : "19rem"}/>
                             </div>
                             
                         </TabPanel>
                         <TabPanel header={(windowSize[0] > 769) ? "Rozbicie kosztów" : "Koszty"}>
                             <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-20rem md:w-27rem"/>
+                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-21rem md:w-27rem"/>
                             </div>
                         </TabPanel>
                         <TabPanel header={(windowSize[0] > 769) ? "Rozbicie dochodów" : "Dochody"}>
                             <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-20rem md:w-27rem" />
+                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-21rem md:w-27rem" />
                             </div>
                         </TabPanel>
                         <TabPanel header={(windowSize[0] > 769) ? "Tabela transakcji" : "Trans"}>
@@ -304,16 +306,25 @@ export default function Home() {
                                 </DataTable>
                             </div>
                             <div className="p-buttonset">
-                                <Button type="button" label="Usuń wybrany rekord" icon="pi pi-trash" onClick={usunWybrany} size="large"></Button>
-                                <Button type="button" label="Edytuj wybrany rekord" disabled icon="pi pi-file-edit" onClick={usunWybrany} size="large"></Button>
+                                <Button type="button" 
+                                    label={(windowSize[0] > 769) ? "Usuń wybrany rekord" : "Usuń"} icon="pi pi-trash" onClick={usunWybrany} 
+                                    size={(windowSize[0] > 769) ? "large" : "small"}></Button>
+                                <Button type="button" 
+                                    label={(windowSize[0] > 769) ? "Edytuj wybrany rekord" : "Edytuj"} disabled icon="pi pi-file-edit" onClick={usunWybrany} 
+                                    size={(windowSize[0] > 769) ? "large" : "small"}></Button>
                             </div>
                             
                         </TabPanel>
                     </TabView>
                     <div className="p-buttonset">
-                        <Button type="button" label="Poprzedni miesiąc" icon="pi pi-arrow-left" onClick={monthBackward} size="large"/>  
-                        <Button label={monthFilter} disabled size="large"/>
-                        <Button type="button" label="Kolejny miesiąc" icon="pi pi-arrow-right" iconPos="right" onClick={monthForward} size="large"/>
+                        <Button type="button" 
+                            label={(windowSize[0] > 769) ? "Poprzedni miesiąc" : ""} icon="pi pi-arrow-left" onClick={monthBackward} 
+                            size={(windowSize[0] > 769) ? "large" : "small"}/>  
+                        <Button label={monthFilter} disabled 
+                            size={(windowSize[0] > 769) ? "large" : "small"}/>
+                        <Button type="button" 
+                            label={(windowSize[0] > 769) ? "Kolejny miesiąc" : ""} icon="pi pi-arrow-right" iconPos="right" onClick={monthForward} 
+                            size={(windowSize[0] > 769) ? "large" : "small"}/>
                     </div>
                 </div>
                 
@@ -323,13 +334,20 @@ export default function Home() {
             ) : (
                 <div className="niezalogowany">
                     <h1>Witaj w aplikacji TwójBudżet! </h1>
+                    <br />
+                    <p>Aplikacja służy do rejestrowania domowych przychodów i kosztów z podziałem na kategorie.
+                         Oprócz tego zaimplementowano przelicznik walut online oparty o zewnętrzne API.</p>
+                    <br />
                     <p>Aby skorzystać z jej funkcjonalności musisz się zalogować.</p>
+                    <br />
                     <p>
                     <Link to="/Logowanie">
                         Zaloguj się!
                     </Link>
+                    <br /><br />
                     </p>
                     <p>Nie masz konta? Nic straconego! Uzyskaj kontrolę nad budżetem domowym już teraz!</p>
+                    <br />
                     <Link to="/Rejestracja">
                         Zarejestruj się!
                     </Link>

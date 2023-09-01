@@ -3,7 +3,7 @@ import React from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { authDeleted } from "./features/authSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Navbar() {
     const authredux = useSelector(state => state.auth);
