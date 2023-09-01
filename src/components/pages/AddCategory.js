@@ -2,11 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from "primereact/inputnumber";
 import { Chart } from 'primereact/chart';
-import 'primereact/resources/themes/saga-purple/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primereact/resources/primereact.css';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
 import './flags.css';
 
 import './TransactionStyles.css'
@@ -216,22 +211,22 @@ export default function AddCategory() {
             <h1>Przelicz waluty!</h1>
 
             <div className="card flex justify-content-center">
-                <InputNumber value={fromCurrAmmount} onValueChange={(e) => setFromCurrAmmount(e.value)} 
+                <InputNumber className="w-11rem md:w-full" value={fromCurrAmmount} onValueChange={(e) => setFromCurrAmmount(e.value)} 
                     minFractionDigits={2} maxFractionDigits={2} locale="pl-PL" 
                     mode="currency" currency={fromCurrency.currency} min={0} max={10000} placeholder="00,00"/>
                 <div className="card flex justify-content-center">
                 <Dropdown value={fromCurrency} onChange={(e) => setfromCurrency(e.value)} options={countries} optionLabel="name" placeholder="Wybierz Walutę" 
-                    valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-full md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
+                    valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-9rem md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
                 </div> 
             </div>
 
             <div className="card flex justify-content-center">
-                <InputNumber value={toCurrAmmount} onValueChange={(e) => setToCurrAmmount(e.value)} 
+                <InputNumber className="w-11rem md:w-full" value={toCurrAmmount} onValueChange={(e) => setToCurrAmmount(e.value)} 
                     minFractionDigits={2} maxFractionDigits={2} locale="pl-PL" 
                     mode="currency" currency={toCurrency.currency} min={0} placeholder="00,00" disabled/>
                 <div className="card flex justify-content-center">
                 <Dropdown value={toCurrency} onChange={(e) => setToCurrency(e.value)} options={countries} optionLabel="name" placeholder="Wybierz Walutę" 
-                    valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-full md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
+                    valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-9rem md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
                 </div> 
             </div>
 

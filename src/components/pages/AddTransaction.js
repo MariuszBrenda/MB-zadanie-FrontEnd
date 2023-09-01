@@ -11,11 +11,7 @@ import { Button } from "primereact/button";
 import { nanoid } from "@reduxjs/toolkit";
 import { Toast } from 'primereact/toast';
 import './TransactionStyles.css'
-import 'primereact/resources/themes/saga-purple/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
 import { transactionAdded } from "../features/transactionSlice";
-import 'primeflex/primeflex.css';
 
 const AddTransaction = () => {
     const auth = useSelector(state => state.auth);

@@ -13,3 +13,27 @@
     width: 45rem;
     height: 480px;
 }
+
+@media screen and (max-width: 769px) {
+    .wybieracz {
+        background-color: antiquewhite;
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        height: 60px;
+        line-height: 60px;
+        font-size:xx-large;
+    }
+    
+    .karta {
+        background-color: white;
+        width: 20rem;
+        height: 480px;
+        font-size: 5px;
+    }
+
+    .p-buttonset {
+        width: 20rem;
+    }
+    
+}

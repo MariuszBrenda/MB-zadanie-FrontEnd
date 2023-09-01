@@ -3,6 +3,7 @@ import React from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { authDeleted } from "./features/authSlice";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
     const authredux = useSelector(state => state.auth);
@@ -12,6 +13,14 @@ export default function Navbar() {
     const isActive = useMatch( {path: resolvedPath.pathname, end: true})
     if ((authredux.username != null) && !isActive) zmienna = true;
     else zmienna = false;
+
+    const [clicked, setClicked] = useState(false);
+
+    function Kliknieto(){
+        const pomoc = !clicked;
+        setClicked(pomoc)
+    }
+
     return (
         <>          
             <nav>
@@ -33,7 +42,7 @@ export default function Navbar() {
                     <div className="tytul">TwójBudżet</div>
                 </Link>
             
-                <ul className="navbar">
+                <ul id="navbar" className={clicked ? "#navbar active" : "navbar"}>
                     <ActiveLink to="/">Strona Główna</ActiveLink>
                     
                     {zmienna ? (
@@ -52,10 +61,16 @@ export default function Navbar() {
                         </>
                     )}                  
                 </ul>
+
+                <div id="mobile" onClick={Kliknieto}>
+                    <i id="bar" className={clicked ? "pi pi-times" : "pi pi-bars"}></i>
+                </div>
             </nav>
         </>
     )
 }
+
+
 
 function ActiveLink( {to, children, ...props}) {
     const resolvedPath = useResolvedPath(to);
@@ -69,4 +84,3 @@ function ActiveLink( {to, children, ...props}) {
     )
 }
 
-//localStorage.getItem()

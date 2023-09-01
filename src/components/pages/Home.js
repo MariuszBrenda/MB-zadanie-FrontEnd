@@ -12,11 +12,6 @@ import './HomeStyles.css'
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Button } from "primereact/button";
 
-import 'primereact/resources/themes/saga-purple/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-
-
 export default function Home() {
     const auth = useSelector(state => state.auth);
     const transactions = useSelector(state => state.transactions);
@@ -36,6 +31,10 @@ export default function Home() {
     const [doughnutOptions, setDoughnutOptions] = useState({});
     const [doughnutIncData, setDoughnutIncData] = useState({});
     const [doughnutIncOptions, setDoughnutIncOptions] = useState({});
+    const [windowSize, setWindowSize] = useState([
+        window.innerWidth,
+        window.innerHeight,
+      ]);
 
     function usunWybrany() {
         let indexToDelete;
@@ -254,10 +253,20 @@ export default function Home() {
             const incChart = CategoryChart(monthIncCatSum);
             setDoughnutIncData(incChart[0]);
             setDoughnutIncOptions(incChart[1]);
-
+            console.log(window.innerWidth);
     },[monthFilter])
 
-
+    useEffect(() => {
+        const handleWindowResize = () => {
+          setWindowSize([window.innerWidth, window.innerHeight]);
+        };
+    
+        window.addEventListener('resize', handleWindowResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleWindowResize);
+        };
+      }, [setWindowSize]);
 
     return (
         <>
@@ -265,23 +274,23 @@ export default function Home() {
                 <>
                 <div className="karta">
                     <TabView>
-                        <TabPanel header="Bilans miesięczny">
+                        <TabPanel header={(windowSize[0] > 769) ? "Bilans miesięczny" : "Bilans"}>
                             <div className="card" >
                                 <Chart type="bar" data={chartData} options={chartOptions} height="430px" width="600px"/>
                             </div>
                             
                         </TabPanel>
-                        <TabPanel header="Rozbicie kosztów">
+                        <TabPanel header={(windowSize[0] > 769) ? "Rozbicie kosztów" : "Koszty"}>
                             <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-full md:w-27rem"/>
+                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-20rem md:w-27rem"/>
                             </div>
                         </TabPanel>
-                        <TabPanel header="Rozbicie dochodów">
+                        <TabPanel header={(windowSize[0] > 769) ? "Rozbicie dochodów" : "Dochody"}>
                             <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-full md:w-27rem" />
+                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-20rem md:w-27rem" />
                             </div>
                         </TabPanel>
-                        <TabPanel header="Tabela transakcji">
+                        <TabPanel header={(windowSize[0] > 769) ? "Tabela transakcji" : "Trans"}>
                             <div className="card">
                                 <DataTable value={transactions} removableSort selectionMode={'radiobutton'} selection={selectedProduct} 
                                     onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" tableStyle={{minHeight: "380px", minWidth: "35rem" }}
