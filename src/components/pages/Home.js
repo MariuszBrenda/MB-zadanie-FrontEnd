@@ -203,7 +203,7 @@ export default function Home() {
         {
             console.log(transactions);
             transactions.forEach(element => {
-            if(element.user === auth.username){
+            if((element.user === auth.username) && (auth.username !== null)){
                 // sprawdzenie czy miesiąc się zgadza
 
                 dateHelper = element.date.slice(-7)
