@@ -11,7 +11,7 @@ const initialValue = [{
 }];
 const initialState = localStorage.getItem("pspizk-mb-transactions") !== null 
     ? JSON.parse(localStorage.getItem("pspizk-mb-transactions")) : initialValue;
-
+//const initialState = initialValue;
 
 
 const transactionSlice = createSlice({

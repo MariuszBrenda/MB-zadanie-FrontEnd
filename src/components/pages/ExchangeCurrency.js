@@ -1,16 +1,18 @@
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux"
 import React, { useState, useEffect, useRef } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from "primereact/inputnumber";
 import { Chart } from 'primereact/chart';
-import './flags.css';
+import '../styles/flags.css';
+import '../styles/TransactionStyles.css';
 
-import './TransactionStyles.css'
-
-export default function AddCategory() {
+export default function ExchangeCurrency() {
 
     const url = new URL("https://api.currencybeacon.com/v1/convert?api_key=5AbbrkGCJACql4xlgtfsCIsbGGVSinEy&from=EUR&to=PLN&amount=1.50");
     const chartURL = new URL("https://api.currencybeacon.com/v1/timeseries?api_key=5AbbrkGCJACql4xlgtfsCIsbGGVSinEy&base=EUR&start_date=2023-08-10&end_date=2023-08-20&symbols=PLN")
 
+    const auth = useSelector(state => state.auth);
     const firstUpdate = useRef(true);
     const firstUpdate2 = useRef(true);
     const [fromCurrency, setfromCurrency] = useState({ name: 'Dolar Amerykański', code: 'US', currency: 'USD' });
@@ -174,7 +176,7 @@ export default function AddCategory() {
         if (option) {
             return (
                 <div className="flex align-items-center">
-                    <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
+                    <img alt={option.name} src={require("../images/flag_placeholder.png")} className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
                     <div>{option.name}</div>
                 </div>
             );
@@ -186,7 +188,7 @@ export default function AddCategory() {
     const countryOptionTemplate = (option) => {
         return (
             <div className="flex align-items-center">
-                <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
+                <img alt={option.name} src={require("../images/flag_placeholder.png")} className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
                 <div>{option.name}</div>
             </div>
         );
@@ -207,35 +209,57 @@ export default function AddCategory() {
     };
 
     return (
-        <div className="trans-form">
-            <h1>Przelicz waluty!</h1>
+        <>
+            { (auth.username !== null) ? (
+                <div className="trans-form">
+                    <h1>Przelicz waluty!</h1>
 
-            <div className="card flex justify-content-center">
-                <InputNumber className="w-11rem md:w-full" value={fromCurrAmmount} onValueChange={(e) => setFromCurrAmmount(e.value)} 
-                    minFractionDigits={2} maxFractionDigits={2} locale="pl-PL" 
-                    mode="currency" currency={fromCurrency.currency} min={0} max={10000} placeholder="00,00"/>
-                <div className="card flex justify-content-center">
-                <Dropdown value={fromCurrency} onChange={(e) => setfromCurrency(e.value)} options={countries} optionLabel="name" placeholder="Wybierz Walutę" 
-                    valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-9rem md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
-                </div> 
-            </div>
+                    <div className="card flex justify-content-center">
+                        <InputNumber className="w-11rem md:w-full" value={fromCurrAmmount} onValueChange={(e) => setFromCurrAmmount(e.value)} 
+                            minFractionDigits={2} maxFractionDigits={2} locale="pl-PL" 
+                            mode="currency" currency={fromCurrency.currency} min={0} max={10000} placeholder="00,00"/>
+                        <div className="card flex justify-content-center">
+                        <Dropdown value={fromCurrency} onChange={(e) => setfromCurrency(e.value)} options={countries} optionLabel="name" placeholder="Wybierz Walutę" 
+                            valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-9rem md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
+                        </div> 
+                    </div>
 
-            <div className="card flex justify-content-center">
-                <InputNumber className="w-11rem md:w-full" value={toCurrAmmount} onValueChange={(e) => setToCurrAmmount(e.value)} 
-                    minFractionDigits={2} maxFractionDigits={2} locale="pl-PL" 
-                    mode="currency" currency={toCurrency.currency} min={0} placeholder="00,00" disabled/>
-                <div className="card flex justify-content-center">
-                <Dropdown value={toCurrency} onChange={(e) => setToCurrency(e.value)} options={countries} optionLabel="name" placeholder="Wybierz Walutę" 
-                    valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-9rem md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
-                </div> 
-            </div>
+                    <div className="card flex justify-content-center">
+                        <InputNumber className="w-11rem md:w-full" value={toCurrAmmount} onValueChange={(e) => setToCurrAmmount(e.value)} 
+                            minFractionDigits={2} maxFractionDigits={2} locale="pl-PL" 
+                            mode="currency" currency={toCurrency.currency} min={0} placeholder="00,00" disabled/>
+                        <div className="card flex justify-content-center">
+                        <Dropdown value={toCurrency} onChange={(e) => setToCurrency(e.value)} options={countries} optionLabel="name" placeholder="Wybierz Walutę" 
+                            valueTemplate={TextTemplate} itemTemplate={countryOptionTemplate} className="w-9rem md:w-14rem" panelFooterTemplate={panelFooterTemplate} />
+                        </div> 
+                    </div>
 
-            <h3>Kurs {fromCurrency.currency}/{toCurrency.currency} z 30 dni</h3>
-            <div className="card">
-            <Chart type="line" data={chartData} options={chartOptions} />
-            </div>
-            
-        </div>
-           
+                    <h3>Kurs {fromCurrency.currency}/{toCurrency.currency} z 30 dni</h3>
+                    <div className="card">
+                    <Chart type="line" data={chartData} options={chartOptions} />
+                    </div>
+                    
+                </div>
+            ) : (
+                <div className="niezalogowany">
+                        <h1>Nie jesteś zalogowany!</h1>
+                        <br />
+                        <p>Aby skorzystać z tej funkcjonalności musisz się zalogować.</p>
+                        <br />
+                        <p>
+                        <Link to="/Logowanie">
+                            Zaloguj się!
+                        </Link>
+                        <br />
+                        <br />
+                        </p>
+                        <p>Nie masz konta? Nic straconego! Uzyskaj kontrolę nad budżetem domowym już teraz!</p>
+                        <br />
+                        <Link to="/Rejestracja">
+                            Zarejestruj się!
+                        </Link>
+                    </div>
+            )}
+        </>   
     )
 }

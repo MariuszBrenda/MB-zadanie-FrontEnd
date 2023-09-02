@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { FilterMatchMode } from 'primereact/api';
 import { transactionAdded, transactionDeleteAll, transactionDeleted } from "../features/transactionSlice";
 import { Tag } from "primereact/tag";
 import { Chart } from 'primereact/chart';
-import './HomeStyles.css'
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Button } from "primereact/button";
+import { Toast } from 'primereact/toast';
+import '../styles/HomeStyles.css';
 
 export default function Home() {
     const auth = useSelector(state => state.auth);
@@ -35,21 +36,31 @@ export default function Home() {
         window.innerWidth,
         window.innerHeight,
       ]);
+    const toast = useRef(null);
+
+    function edytujWybrany() {
+        // to be done
+    }
 
     function usunWybrany() {
         let indexToDelete;
-        console.log(selectedProduct);
-        console.log(transactions.length);
-        for (let index = 0; index < transactions.length; index++) {
-            if (transactions[index].id == selectedProduct.id) {
-                indexToDelete = index;
-                break;
-            }
-        };
-        console.log(indexToDelete);
-        dispatch(
-            transactionDeleted(indexToDelete)
-        );
+        if(selectedProduct != null){
+            console.log(selectedProduct);
+            console.log(transactions.length);
+            for (let index = 0; index < transactions.length; index++) {
+                if (transactions[index].id === selectedProduct.id) {
+                    indexToDelete = index;
+                    break;
+                }
+            };
+            console.log(indexToDelete);
+            dispatch(
+                transactionDeleted(indexToDelete)
+            );
+        }
+        else{
+            toast.current.show({ severity: 'error', summary: 'Błąd!', detail: 'Nie zaznaczono transakcji do usunięcia!' });
+        }
     }
 
     function usunWszystko() {
@@ -188,7 +199,10 @@ export default function Home() {
             { name: 'Inne', sum: 0 }
         ]; 
         
-        transactions.forEach(element => {
+        if (transactions.length > 1)
+        {
+            console.log(transactions);
+            transactions.forEach(element => {
             if(element.user === auth.username){
                 // sprawdzenie czy miesiąc się zgadza
 
@@ -253,7 +267,7 @@ export default function Home() {
             const incChart = CategoryChart(monthIncCatSum);
             setDoughnutIncData(incChart[0]);
             setDoughnutIncOptions(incChart[1]);
-            console.log(window.innerWidth);
+            console.log(window.innerWidth);}
     },[monthFilter])
 
     useEffect(() => {
@@ -273,24 +287,37 @@ export default function Home() {
         { (auth.username !== null) ? (
                 <>
                 <div className="karta">
+                    <Toast ref={toast} position="bottom-left"/>
                     <TabView>
                         <TabPanel header={(windowSize[0] > 769) ? "Bilans miesięczny" : "Bilans"}>
-                            <div className="card" >
-                                <Chart type="bar" data={chartData} options={chartOptions} 
-                                height={(windowSize[0] > 769) ? "430px" : "19rem"} 
-                                width={(windowSize[0] > 769) ? "600px" : "19rem"}/>
-                            </div>
-                            
+                            { (transactions.length === 1) ? (
+                                <p>Aby zobaczyć wykresy dodaj transakcje!</p>
+                            ) : (
+                                <div className="card" >
+                                    <Chart type="bar" data={chartData} options={chartOptions} 
+                                    height={(windowSize[0] > 769) ? "430px" : "19rem"} 
+                                    width={(windowSize[0] > 769) ? "600px" : "19rem"}/>
+                                </div>  
+                            )}
                         </TabPanel>
                         <TabPanel header={(windowSize[0] > 769) ? "Rozbicie kosztów" : "Koszty"}>
-                            <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-21rem md:w-27rem"/>
-                            </div>
+                            { (transactions.length === 1) ? (
+                                <p>Aby zobaczyć wykresy dodaj transakcje!</p>
+                            ) : (
+                                <div className="card flex justify-content-center">
+                                    <Chart type="doughnut" data={doughnutData} options={doughnutOptions} className="w-21rem md:w-27rem"/>
+                                </div> 
+                            )}
                         </TabPanel>
                         <TabPanel header={(windowSize[0] > 769) ? "Rozbicie dochodów" : "Dochody"}>
-                            <div className="card flex justify-content-center">
-                                <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-21rem md:w-27rem" />
-                            </div>
+                            { (transactions.length === 1) ? (
+                                <p>Aby zobaczyć wykresy dodaj transakcje!</p>
+                            ) : (
+                                <div className="card flex justify-content-center">
+                                    <Chart type="doughnut" data={doughnutIncData} options={doughnutIncOptions} className="w-21rem md:w-27rem" />
+                                </div> 
+                            )}
+                            
                         </TabPanel>
                         <TabPanel header={(windowSize[0] > 769) ? "Tabela transakcji" : "Trans"}>
                             <div className="card">
@@ -308,9 +335,6 @@ export default function Home() {
                             <div className="p-buttonset">
                                 <Button type="button" 
                                     label={(windowSize[0] > 769) ? "Usuń wybrany rekord" : "Usuń"} icon="pi pi-trash" onClick={usunWybrany} 
-                                    size={(windowSize[0] > 769) ? "large" : "small"}></Button>
-                                <Button type="button" 
-                                    label={(windowSize[0] > 769) ? "Edytuj wybrany rekord" : "Edytuj"} disabled icon="pi pi-file-edit" onClick={usunWybrany} 
                                     size={(windowSize[0] > 769) ? "large" : "small"}></Button>
                             </div>
                             

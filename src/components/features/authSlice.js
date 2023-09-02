@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // localstorage.getitem ? null
-const initialState = 
+const initialState = //{username: null};
   localStorage.getItem("pspizk-mb-auth") !== null 
     ? JSON.parse(localStorage.getItem("pspizk-mb-auth")) : {
       username: null

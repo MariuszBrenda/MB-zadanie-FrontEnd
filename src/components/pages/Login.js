@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from "react"
 import { Link } from "react-router-dom";
-import './LoginStyles.css'
 import { useSelector, useDispatch } from "react-redux";
 import { authAdded } from "../features/authSlice";
 import { transactionsReload } from "../features/transactionSlice";
+import '../styles/LoginStyles.css';
 
 export default function Login() {
     let accountExist = false;

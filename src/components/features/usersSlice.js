@@ -9,6 +9,12 @@ const initialState =
             password: 'admin' 
         }]
 
+/*const initialState = [{
+    id: '1',
+    username: 'admin',
+    password: 'admin' 
+}]*/
+
 const usersSlice = createSlice({
     name: 'users',
     initialState,

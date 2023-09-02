@@ -10,8 +10,8 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { nanoid } from "@reduxjs/toolkit";
 import { Toast } from 'primereact/toast';
-import './TransactionStyles.css'
 import { transactionAdded } from "../features/transactionSlice";
+import '../styles/TransactionStyles.css';
 
 const AddTransaction = () => {
     const auth = useSelector(state => state.auth);
